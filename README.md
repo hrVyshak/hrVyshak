@@ -2,7 +2,7 @@
 - 👀 I’m interested in ... cricket
 - 🌱 I’m currently learning ...Data Analytics
 - 💞️ I’m looking to collaborate on ...Data analysis
-- 📫 How to reach me ...hrvysha@gmail.com
+- 📫 How to reach me ...hrvyshak@gmail.com
 
 
 <!---
