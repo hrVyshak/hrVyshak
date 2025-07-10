@@ -1,21 +1,27 @@
+
 Param(
     [Parameter(Mandatory=$True)]
-    $OrganizationName = " omshiva2959 "
-    )
+    [String] $OrganizationName
+	)
     function Write-OK { param($str) Write-Host -ForegroundColor green $str } 
     function Write-gray { param($str) Write-Host -ForegroundColor gray $str } 
     function Write-Break { Write-Host -ForegroundColor Gray "***************************************************************************************************" }
     function Write-nonOK { param($str) Write-Host -ForegroundColor red $str } 
     function Write-magenta { param($str) Write-Host -ForegroundColor magenta $str } 
+
     Write-Host -ForegroundColor Yellow ("=" * ($str.Length + 100))
     Write-Host -ForegroundColor Yellow "This script is to check the basic netwrok connectiovity for the required URL's from Agent Machine"
     Write-Host -ForegroundColor Yellow ("=" * ($str.Length + 100))
+
 $WorkingUrl = @()
 $NotWorkingUrl = @()
+
 $UrlListArray = "dev.azure.com","aex.dev.azure.com","status.dev.azure.com","aexprodea1.vsaex.visualstudio.com","amp.azure.net","app.vssps.dev.azure.com","app.vssps.visualstudio.com","azure.microsoft.com","go.microsoft.com","graph.microsoft.com","login.microsoftonline.com","management.azure.com","management.core.windows.net","microsoft.com","static2.sharepointonline.com","visualstudio.com","vsrm.dev.azure.com","vstsagentpackage.azureedge.net","$OrganizationName.visualstudio.com","$OrganizationName.vsrm.visualstudio.com","$OrganizationName.vstmr.visualstudio.com","$OrganizationName.pkgs.visualstudio.com","$OrganizationName.vssps.visualstudio.com","cdn.vsassets.io","aadcdn.msauth.net","aadcdn.msftauth.net","amcdn.msftauth.net","azurecomcdn.azureedge.net","vssps.dev.azure.com","vstoken.dev.azure.com","vsblob.dev.azure.com","dataimport.dev.azure.com","vstmr.dev.azure.com","advsec.dev.azure.com","entreq.dev.azure.com","codelens.dev.azure.com","artifacts.dev.azure.com","pkgs.dev.azure.com","gdprdel.dev.azure.com","vslicense.dev.azure.com","analytics.dev.azure.com","vsdscops.dev.azure.com","vsaex.dev.azure.com","vscommerce.dev.azure.com","commvtwo.dev.azure.com","auditservice.dev.azure.com","vssh.dev.azure.com","feeds.dev.azure.com","azchatops.dev.azure.com","governance.dev.azure.com","dpdbot.dev.azure.com","extmgmt.dev.azure.com","vstskalypso.dev.azure.com","almsearch.dev.azure.com","login.live.com","live.com","nuget.org","ssh.dev.azure.com","vs-ssh.visualstudio.com"
+
 foreach ($UrlList in $UrlListArray)
-{   
+{	
    Write-gray "Checking Network connectivity for $UrlList "
+
   #Write-Host $UrlList
   $ConnectionStatus = (Test-NetConnection -ComputerName $UrlList -Port 443 -WarningAction:SilentlyContinue).TcpTestSucceeded
   #Write-Host Test1
@@ -24,39 +30,40 @@ foreach ($UrlList in $UrlListArray)
    
    if ($ConnectionStatus) { 
    #write-ok "Network connectivity succeeded for $UrlList."
-        $WorkingUrl += $UrlList 
-    }else{
-        #Write-nonOK "Network connectivity failed for $UrlList."
-        $NotWorkingUrl += $UrlList 
-    }
+	    $WorkingUrl += $UrlList 
+	}else{
+		#Write-nonOK "Network connectivity failed for $UrlList."
+		$NotWorkingUrl += $UrlList 
+	}
 }
     
 if (($WorkingUrl)) {
-        Write-Host "`n$line"
+	    Write-Host "`n$line"
         Write-Break 
         #Write-ok -ForegroundColor Yellow ("=" * ($str.Length + 100))
-        Write-ok "Connectivity to the following URLs has been successfully established."
-        #Write-ok -ForegroundColor Yellow ("=" * ($str.Length + 100))
+	    Write-ok "Connectivity to the following URLs has been successfully established."
+	    #Write-ok -ForegroundColor Yellow ("=" * ($str.Length + 100))
         Write-Break 
         Write-ok "$WorkingUrl"
         Write-Host "`n$line"
     }
+
 if (($NotWorkingUrl)) {
-        Write-Break 
+		Write-Break 
         #Write-nonOK -ForegroundColor Yellow ("=" * ($str.Length + 100))
-        Write-nonOK "Connection to the following URLs could not be established."
+		Write-nonOK "Connection to the following URLs could not be established."
         Write-Break 
         Write-nonOK "$NotWorkingUrl"
-        #Write-nonOK -ForegroundColor Yellow ("=" * ($str.Length + 100))
+		#Write-nonOK -ForegroundColor Yellow ("=" * ($str.Length + 100))
         Write-Host "`n$line"
      }
         else{
-        Write-Break 
-        Write-nonOK "The network connectivity appears to be satisfactory for accessing Azure DevOps resources"
+	    Write-Break 
+		Write-nonOK "The network connectivity appears to be satisfactory for accessing Azure DevOps resources"
         Write-Break 
         #Write-nonOK "The network connectivity appears to be satisfactory for accessing Azure DevOps resources."
         Write-Host "`n$line"
-    }
+	}
         Write-Break 
         Write-magenta "The script does not verify wildcard URLs below. You'll need to manually confirm network connectivity."
         Write-Break 
@@ -69,4 +76,5 @@ if (($NotWorkingUrl)) {
                    *.vsassets.io
                    *.vsassetscdn.azure.cn
                    *.gallerycdn.azure.cn"
+
         Write-Host "`n$line" 
